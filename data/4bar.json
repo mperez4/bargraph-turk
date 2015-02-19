@@ -1,0 +1,14 @@
+[
+	{ "trial_data": [
+		{"frequency": ".08167", "color": "steelblue"},
+		{"frequency": ".01492", "color": "red"},
+		{"frequency": ".02782", "color": "steelblue"},
+		{"frequency": ".04782", "color": "red"}]
+	},
+	{ "trial_data": [
+		{"frequency": ".01167", "color": "steelblue"},
+		{"frequency": ".05492", "color": "red"},
+		{"frequency": ".06782", "color": "steelblue"},
+		{"frequency":  ".03782", "color": "red"}]
+		}
+]
