@@ -2,9 +2,12 @@ var bar = 'bar';
 var line = 'line';
 var dot = 'dot';
 var numBars = 4;
-var mydata;
 var trialNum = 2; //index
 var numTrials = 2; // number of trials
+
+var mydata;
+var mystage;
+var stage;
 
 //params
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -27,13 +30,14 @@ var yAxis = d3.svg.axis()
 	.orient("left")
 	.tickFormat('');
 
-var stage;
-
 // load the external data
 d3.json("data/4bar.json", function(error, data) {
-  var mystage = drawStage(stage);
-  drawChart(mystage, dot, data, numBars);
-
+  if(!error){
+    mystage = drawStage(stage);
+    drawChart(mystage, line, data, numBars);
+  }else{
+    console.log(error);
+  }
 });
 
 //draw the chart (stimulus)
@@ -117,11 +121,10 @@ function drawChart(stage, type, data, numBars){
         .attr("d", line2);
     return stage;
   }
-
 }
 
 function drawStage(stage){
-  //draw up stage(svg element)
+  //draw stage (svg element)
   stage = d3.select(".container").append("svg")
   	.attr("width", width + margin.left + margin.right)
   	.attr("height", height + margin.top + margin.bottom)
@@ -133,5 +136,5 @@ function drawStage(stage){
 function clearStage(stage){
   stage.selectAll("rect").remove();
   stage.selectAll("line").remove();
-  // stage.selectAll("path").remove();
+  stage.selectAll("circle").remove();
 }
