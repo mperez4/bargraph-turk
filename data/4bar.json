@@ -1,14 +1,45 @@
 [
 	{ "trial_data": [
-		{"frequency": ".08167", "color": "steelblue"},
-		{"frequency": ".01492", "color": "red"},
-		{"frequency": ".02782", "color": "steelblue"},
-		{"frequency": ".04782", "color": "red"}]
+		{"frequency": "8167", "color": "steelblue"},
+		{"frequency": "1492", "color": "red"},
+		{"frequency": "2782", "color": "steelblue"},
+		{"frequency": "4782", "color": "red"}]
 	},
 	{ "trial_data": [
-		{"frequency": ".01167", "color": "steelblue"},
-		{"frequency": ".05492", "color": "red"},
-		{"frequency": ".06782", "color": "steelblue"},
-		{"frequency":  ".03782", "color": "red"}]
+		{"frequency": "1167", "color": "steelblue"},
+		{"frequency": "5492", "color": "red"},
+		{"frequency": "6782", "color": "steelblue"},
+		{"frequency":  "3782", "color": "red"}]
+	},
+	{ "trial_data": [
+		{"frequency": "3167", "color": "steelblue"},
+		{"frequency": "1492", "color": "red"},
+		{"frequency": "8782", "color": "steelblue"},
+		{"frequency":  "1782", "color": "red"}]
+	},
+	{ "trial_data": [
+		{"frequency": "2167", "color": "steelblue"},
+		{"frequency": "5492", "color": "red"},
+		{"frequency": "1782", "color": "steelblue"},
+		{"frequency":  "8782", "color": "red"}]
+	},
+	{ "trial_data": [
+		{"frequency": "3167", "color": "steelblue"},
+		{"frequency": "7492", "color": "red"},
+		{"frequency": "3782", "color": "steelblue"},
+		{"frequency":  "9782", "color": "red"}]
+	},
+	{ "trial_data": [
+		{"frequency": "9167", "color": "steelblue"},
+		{"frequency": "3492", "color": "red"},
+		{"frequency": "5782", "color": "steelblue"},
+		{"frequency":  "8782", "color": "red"}]
+	},
+	{ "trial_data": [
+		{"frequency": "1167", "color": "steelblue"},
+		{"frequency": "3492", "color": "red"},
+		{"frequency": "3782", "color": "steelblue"},
+		{"frequency":  "6782", "color": "red"}]
 		}
+
 ]
