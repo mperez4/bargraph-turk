@@ -116,7 +116,7 @@ function drawChart(stage, type, data, numBars){
 
 function drawStage(stage){
   //draw stage (svg element)
-  stage = d3.select(".container").append("svg")
+  stage = d3.select(".center-block").append("svg")
   	.attr("width", width + margin.left + margin.right)
   	.attr("height", height + margin.top + margin.bottom)
   	.append("g")
