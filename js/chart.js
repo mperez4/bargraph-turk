@@ -1,5 +1,6 @@
 var bar = 'bar';
 var line = 'line';
+var dot = 'dot';
 var numBars = 4;
 var mydata;
 var trialNum = 2; //index
@@ -31,7 +32,7 @@ var stage;
 // load the external data
 d3.json("data/4bar.json", function(error, data) {
   var mystage = drawStage(stage);
-  drawChart(mystage, line, data, numBars);
+  drawChart(mystage, dot, data, numBars);
 
 });
 
@@ -67,10 +68,26 @@ function drawChart(stage, type, data, numBars){
   		.attr("class", "bar")
   		.attr("x", function(d,i) { return x(i); })
   		.attr("width", x.rangeBand())
-  		.style("fill", function(d){ return d.color;})
   		.attr("y", function(d) { return y(parseFloat(d.frequency)); })
-  		.attr("height", function(d) { return height - y(parseFloat(d.frequency)); });
+  		.attr("height", function(d) { return height - y(parseFloat(d.frequency)); })
+      .style("fill", function(d){ return d.color;});
     return stage;
+  }
+  if(chart == 'dot'){
+    //d3 draw dot chart
+    console.log("Dot graph");
+
+    stage.selectAll(".circle")
+  	  .data(mydata)
+  		.enter().append("circle")
+  		.attr("cx", function(d,i) { return x(i); })
+  		.attr("width", x.rangeBand())
+      .attr("r", 20)
+  		.attr("cy", function(d) { return y(parseFloat(d.frequency)); })
+  		.attr("height", function(d) { return height - y(parseFloat(d.frequency)); })
+      .style("fill", function(d){ return d.color;});
+    return stage;
+
   }
   if(chart == 'line'){
     //d3 draw line graph
@@ -80,8 +97,7 @@ function drawChart(stage, type, data, numBars){
     var lineData = '[{"y1":'+ mydata[0].frequency + ', "y2":' + mydata[2].frequency + '},' +
                    '{"y1":'+ mydata[1].frequency + ', "y2":' + mydata[3].frequency + '}]';
     lineData = JSON.parse(lineData);
-    //clearStage(stage);
-    var line = d3.svg.line()
+    var line1 = d3.svg.line()
     .x(function(d,i) { if(i == 0){return x(i)} else {return x(2)}; })
     .y(function(d) { return y(d.y1); });
 
@@ -89,14 +105,17 @@ function drawChart(stage, type, data, numBars){
     .x(function(d,i) { if(i == 0){return x(1)} else {return x(3)}; })
     .y(function(d) { return y(d.y2); });
 
+    //append lines to stage
     stage.append("path")
       .datum(lineData)
       .attr("class", "line1")
-      .attr("d", line);
+      .attr("d", line1);
+
     stage.append("path")
         .datum(lineData)
         .attr("class", "line2")
         .attr("d", line2);
+    return stage;
   }
 
 }
