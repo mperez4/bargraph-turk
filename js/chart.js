@@ -9,7 +9,8 @@ var numTrials;
 var mystage;
 var mydata;
 var stage;
-
+var space = false;
+var trialData;
 //params
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
 	width = 960 - margin.left - margin.right,
@@ -91,14 +92,16 @@ function drawChart(stage, type, data, numBars){
     //create new data..
     var lineData = '[{"y1":'+ mydata[0].frequency + ', "y2":' + mydata[2].frequency + '},' +
                    '{"y1":'+ mydata[1].frequency + ', "y2":' + mydata[3].frequency + '}]';
+
     lineData = JSON.parse(lineData);
+
     var line1 = d3.svg.line()
-    .x(function(d,i) { if(i == 0){return x(i)} else {return x(2)}; })
-    .y(function(d) { return y(d.y1); });
+      .x(function(d,i) { if(i == 0){return x(i)} else {return x(2)}; })
+      .y(function(d) { return y(d.y1); });
 
     var line2 = d3.svg.line()
-    .x(function(d,i) { if(i == 0){return x(1)} else {return x(3)}; })
-    .y(function(d) { return y(d.y2); });
+      .x(function(d,i) { if(i == 0){return x(1)} else {return x(3)}; })
+      .y(function(d) { return y(d.y2); });
 
     //append lines to stage
     stage.append("path")
@@ -116,7 +119,7 @@ function drawChart(stage, type, data, numBars){
 
 function drawStage(stage){
   //draw stage (svg element)
-  stage = d3.select(".center-block").append("svg")
+  stage = d3.select(".container").append("svg")
   	.attr("width", width + margin.left + margin.right)
   	.attr("height", height + margin.top + margin.bottom)
   	.append("g")
@@ -126,17 +129,56 @@ function drawStage(stage){
 
 // load the external data
 d3.json("data/4bar.json", function(error, data) {
-  numTrials = data.length;
   if(!error){
-    setInterval(function(){
-      if(trialNum < numTrials){
-        d3.selectAll("svg").remove();
-        mystage = drawStage(stage);
-        drawChart(mystage, dot, data, numBars);
-        trialNum++;
+    trialData = data;
+    numTrials = data.length;
+    //say press enter to begin
+    displayText("Press Space to start");
+    //plus sign
+    displayText("+");
+    //begin interval
+      //if you take too long, say too slow, trialNum++
+      //if you press m or z, trialNum++
+      setInterval(function(){
+        if(trialNum < numTrials){
+          //removeText();
+          d3.selectAll("svg").remove();
+          mystage = drawStage(stage);
+          drawChart(mystage, line, data, numBars);
+          trialNum++;
       }
     }, 1000);
   }else{
     console.log(error);
   }
 });
+
+function displayText(myText){
+  var text = d3.select(".myText").append("text")
+    .text(myText);
+}
+function removeText(){
+  d3.select(".myText").remove();
+}
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '90') {
+        // z key
+        console.log(global_data);
+    }
+    else if (e.keyCode == '77') {
+        // m key
+        console.log('m');
+    }
+    else if (e.keyCode == '32') {
+        // space key
+        removeText();
+        //erase div with 'press space to begin'
+        console.log('space');
+    }
+}
