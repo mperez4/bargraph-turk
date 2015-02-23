@@ -77,8 +77,8 @@ function drawChart(stage, type, data, numBars){
     console.log('Line graph');
 
     //create new data..
-    var lineData = '[{"y1":'+ mydata[0].frequency + ', "y2":' + mydata[1].frequency + '},' +
-                   '{"y1":'+ mydata[2].frequency + ', "y2":' + mydata[3].frequency + '}]';
+    var lineData = '[{"y1":'+ mydata[0].frequency + ', "y2":' + mydata[2].frequency + '},' +
+                   '{"y1":'+ mydata[1].frequency + ', "y2":' + mydata[3].frequency + '}]';
     lineData = JSON.parse(lineData);
     //clearStage(stage);
     var line = d3.svg.line()
