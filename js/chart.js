@@ -4,11 +4,10 @@ var bar = 'bar';
 var line = 'line';
 var dot = 'dot';
 var numBars = 4;
-var trialNum = 2; //index
-var numTrials = 2; // number of trials
-
-var mydata;
+var trialNum = 0;
+var numTrials;
 var mystage;
+var mydata;
 var stage;
 
 //params
@@ -32,21 +31,12 @@ var yAxis = d3.svg.axis()
 	.orient("left")
 	.tickFormat('');
 
-// load the external data
-d3.json("data/4bar.json", function(error, data) {
-  if(!error){
-    mystage = drawStage(stage);
-    drawChart(mystage, line, data, numBars);
-  }else{
-    console.log(error);
-  }
-});
-
 //draw the chart (stimulus)
 function drawChart(stage, type, data, numBars){
   var chart = type;
   mydata = data[trialNum].trial_data;
 
+  stage.select("svg").remove();
 	x.domain(mydata.map(function(d,i) { return i; }));
 	y.domain([0, d3.max(mydata, function(d) { return parseFloat(d.frequency); })]);
 
@@ -66,7 +56,6 @@ function drawChart(stage, type, data, numBars){
   if(chart == 'bar'){
     //d3 draw bar graph
     console.log("Bar graph");
-
   	//draw the bar chart
     stage.selectAll(".bar")
   		.data(mydata)
@@ -135,8 +124,19 @@ function drawStage(stage){
   return stage;
 }
 
-function clearStage(stage){
-  stage.selectAll("rect").remove();
-  stage.selectAll("line").remove();
-  stage.selectAll("circle").remove();
-}
+// load the external data
+d3.json("data/4bar.json", function(error, data) {
+  numTrials = data.length;
+  if(!error){
+    setInterval(function(){
+      if(trialNum < numTrials){
+        d3.selectAll("svg").remove();
+        mystage = drawStage(stage);
+        drawChart(mystage, dot, data, numBars);
+        trialNum++;
+      }
+    }, 1000);
+  }else{
+    console.log(error);
+  }
+});
