@@ -1,3 +1,5 @@
+/* TODO: add staircasing, add keyevents, bind to flask, save db, iterate*/
+
 var bar = 'bar';
 var line = 'line';
 var dot = 'dot';
