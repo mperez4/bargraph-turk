@@ -152,6 +152,7 @@ d3.json("data/4bar.json", function(error, data) {
     numTrials = data.length;
     //drawing the charts from Trial class.. this probably shouldnt be here tho..
     barChart = new Trial(trialData, bar);
+    barChart.randomizeData();
     barChart.next();
   }else{
     console.log(error);
@@ -178,7 +179,8 @@ var Trial = function (trialData, chartType) {
 //draws first chart
 Trial.prototype.begin = function(){
   var mystage = drawStage(stage);
-  drawChart(mystage, line, trialData, numBars);
+  drawChart(mystage, this.chartType, trialData, numBars);
+  console.log("trial number:" + trialNum);
 }
 
 //goes to next trial, removes svg, creates new svg, renders chart
@@ -189,9 +191,18 @@ Trial.prototype.next = function() {
   //create stage (svg)
   var mystage = drawStage(stage);
   //draws chart
-  drawChart(mystage, line, trialData, numBars);
+  drawChart(mystage, this.chartType, this.trialData, numBars);
   console.log("trial number:" + trialNum);
-};
+}
+//delete svg
+Trial.prototype.remove = function(){
+  //remove svg
+  d3.selectAll("svg").remove();
+}
+Trial.prototype.reset = function(){
+  d3.selectAll("svg").remove();
+  trialNum = 0;
+}
 //displays text ('press space to begin' or '+')
 Trial.prototype.displayText = function (myText){
   this.myText = myText;
@@ -201,9 +212,14 @@ Trial.prototype.displayText = function (myText){
 Trial.prototype.removeText = function (){
   document.getElementById("myText").innerHTML = "";
 }
-//TODO: randomize data
+//randomize data
 Trial.prototype.randomizeData = function(){
-
+  var shuffledArray = jsPsych.randomization.repeat(this.trialData, 1);
+  this.trialData = shuffledArray;  
+}
+//saves data
+Trial.prototype.saveData = function(){
+  //save data
 }
 /////////////////////Helper Functions///////////////////////////////////////////
 //Trial Data Format Function/////
@@ -220,3 +236,5 @@ function resetTimer(){
   t = 0.0;
   console.log(currentTime);
 }
+//barChart.begin();
+//setInterval(function(){barChart.next();}, 2000);
