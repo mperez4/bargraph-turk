@@ -1,17 +1,29 @@
-/* TODO: add staircasing, add keyevents, bind to flask, save db, iterate*/
+/* TODO: add staircasing, add keyevents, bind to flask, save db*/
 
-var bar = 'bar';
-var line = 'line';
-var dot = 'dot';
-var numBars = 4;
-var trialNum = 0;
-var numTrials;
-var mystage;
-var mydata;
-var stage;
-var space = false;
-var trialData;
-//params
+document.onkeydown = checkKey;
+
+window.onload = function(e){
+
+}
+/////////////////////Key Events?////////////////////////////////////////////////
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '90') {
+        // z key
+        console.log('z');
+    }
+    else if (e.keyCode == '77') {
+        // m key
+        console.log('m');
+    }
+    else if (e.keyCode == '32') {
+        //space
+        console.log('space');
+    }
+}
+/////////////////////D3 Variables///////////////////////////////////////////////
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
 	width = 960 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
@@ -31,6 +43,18 @@ var yAxis = d3.svg.axis()
 	.scale(y)
 	.orient("left")
 	.tickFormat('');
+
+/////////////////////D3 Drawing Charts//////////////////////////////////////////
+//draw stage
+function drawStage(stage){
+  //draw stage (svg element)
+  stage = d3.select(".container").append("svg")
+  	.attr("width", width + margin.left + margin.right)
+  	.attr("height", height + margin.top + margin.bottom)
+  	.append("g")
+  	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  return stage;
+}
 
 //draw the chart (stimulus)
 function drawChart(stage, type, data, numBars){
@@ -72,7 +96,7 @@ function drawChart(stage, type, data, numBars){
   if(chart == 'dot'){
     //d3 draw dot chart
     console.log("Dot graph");
-
+    //draw circle graph
     stage.selectAll(".circle")
   	  .data(mydata)
   		.enter().append("circle")
@@ -116,69 +140,83 @@ function drawChart(stage, type, data, numBars){
     return stage;
   }
 }
-
-function drawStage(stage){
-  //draw stage (svg element)
-  stage = d3.select(".container").append("svg")
-  	.attr("width", width + margin.left + margin.right)
-  	.attr("height", height + margin.top + margin.bottom)
-  	.append("g")
-  	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  return stage;
-}
-
+/////////////////////Loading Data///////////////////////////////////////////////
+var mydata;
+var space = false;
+var trialData;
+var t = 0.0;
 // load the external data
 d3.json("data/4bar.json", function(error, data) {
   if(!error){
     trialData = data;
     numTrials = data.length;
-    //say press enter to begin
-    displayText("Press Space to start");
-    //plus sign
-    displayText("+");
-    //begin interval
-      //if you take too long, say too slow, trialNum++
-      //if you press m or z, trialNum++
-      setInterval(function(){
-        if(trialNum < numTrials){
-          //removeText();
-          d3.selectAll("svg").remove();
-          mystage = drawStage(stage);
-          drawChart(mystage, line, data, numBars);
-          trialNum++;
-      }
-    }, 1000);
+    //drawing the charts from Trial class.. this probably shouldnt be here tho..
+    barChart = new Trial(trialData, bar);
+    barChart.next();
   }else{
     console.log(error);
   }
 });
+/////////////////////Trial Class Variables//////////////////////////////////////
+var bar = 'bar';
+var line = 'line';
+var dot = 'dot';
+var numBars = 4; //does nothing yet
+var trialNum = 0; // Trial iterator
+var numTrials; // defined by data.length
+var stage; //global stage
+var barChart; // Trial class object
+/////////////////////Trial Class////////////////////////////////////////////////
+var Trial = function (trialData, chartType) {
+  this.trialData = trialData;
+  this.chartType = chartType;
+  d3.selectAll("svg").remove();
+  console.log("Hello, I am a " + this.chartType + "chart.");
+  console.log(this.trialData)
+};
 
-function displayText(myText){
-  var text = d3.select(".myText").append("text")
-    .text(myText);
+//draws first chart
+Trial.prototype.begin = function(){
+  var mystage = drawStage(stage);
+  drawChart(mystage, line, trialData, numBars);
 }
-function removeText(){
-  d3.select(".myText").remove();
+
+//goes to next trial, removes svg, creates new svg, renders chart
+Trial.prototype.next = function() {
+  //remove svg
+  d3.selectAll("svg").remove();
+  trialNum++;
+  //create stage (svg)
+  var mystage = drawStage(stage);
+  //draws chart
+  drawChart(mystage, line, trialData, numBars);
+  console.log("trial number:" + trialNum);
+};
+//displays text ('press space to begin' or '+')
+Trial.prototype.displayText = function (myText){
+  this.myText = myText;
+  document.getElementById("myText").innerHTML = this.myText;
 }
+//removes all text from 'myText' h1 element
+Trial.prototype.removeText = function (){
+  document.getElementById("myText").innerHTML = "";
+}
+//TODO: randomize data
+Trial.prototype.randomizeData = function(){
 
-document.onkeydown = checkKey;
-
-function checkKey(e) {
-
-    e = e || window.event;
-
-    if (e.keyCode == '90') {
-        // z key
-        console.log(global_data);
-    }
-    else if (e.keyCode == '77') {
-        // m key
-        console.log('m');
-    }
-    else if (e.keyCode == '32') {
-        // space key
-        removeText();
-        //erase div with 'press space to begin'
-        console.log('space');
-    }
+}
+/////////////////////Helper Functions///////////////////////////////////////////
+//Trial Data Format Function/////
+function numberOfBars(numTrials){
+  //returns dataset with desired bars (4/8)
+}
+//Timer Functions////////////////
+function startTimer(){
+  currentTime = self.setInterval(function(){console.log(t);t++;},1000);
+}
+function resetTimer(){
+  clearInterval(currentTime);
+  currentTime = null;
+  t = 0.0;
+  console.log(currentTime);
 }
