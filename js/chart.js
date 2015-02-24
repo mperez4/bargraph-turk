@@ -102,7 +102,7 @@ function drawChart(stage, type, data, numBars){
   		.enter().append("circle")
   		.attr("cx", function(d,i) { return x(i); })
   		.attr("width", x.rangeBand())
-      .attr("r", 20)
+      .attr("r", 10)
   		.attr("cy", function(d) { return y(parseFloat(d.frequency)); })
   		.attr("height", function(d) { return height - y(parseFloat(d.frequency)); })
       .style("fill", function(d){ return d.color;});
@@ -215,7 +215,7 @@ Trial.prototype.removeText = function (){
 //randomize data
 Trial.prototype.randomizeData = function(){
   var shuffledArray = jsPsych.randomization.repeat(this.trialData, 1);
-  this.trialData = shuffledArray;  
+  this.trialData = shuffledArray;
 }
 //saves data
 Trial.prototype.saveData = function(){
