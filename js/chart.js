@@ -20,6 +20,7 @@ function checkKey(e) {
     }
     else if (e.keyCode == '32') {
         //space
+        // barChart.next();
         console.log('space');
     }
 }
@@ -153,7 +154,7 @@ d3.json("data/4bar.json", function(error, data) {
     //drawing the charts from Trial class.. this probably shouldnt be here tho..
     barChart = new Trial(trialData, bar);
     barChart.randomizeData();
-    barChart.next();
+    // setInterval(function(){barChart.next();},2000);
   }else{
     console.log(error);
   }
@@ -222,6 +223,14 @@ Trial.prototype.saveData = function(){
   //save data
 }
 /////////////////////Helper Functions///////////////////////////////////////////
+//Display Text Function///////////
+function displayText(myText){
+  document.getElementById("myText").innerHTML = myText;
+}
+//Remove Text Function///////////
+function removeText(){
+  document.getElementById("myText").innerHTML = "";
+}
 //Trial Data Format Function/////
 function numberOfBars(numTrials){
   //returns dataset with desired bars (4/8)
@@ -236,5 +245,4 @@ function resetTimer(){
   t = 0.0;
   console.log(currentTime);
 }
-//barChart.begin();
-//setInterval(function(){barChart.next();}, 2000);
+////////////////////////////////////////////////////////////////////////////////
