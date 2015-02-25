@@ -49,7 +49,7 @@ var yAxis = d3.svg.axis()
 //draw stage
 function drawStage(stage){
   //draw stage (svg element)
-  stage = d3.select(".container").append("svg")
+  stage = d3.select(".center-block").append("svg").attr("class", "svg-class")
   	.attr("width", width + margin.left + margin.right)
   	.attr("height", height + margin.top + margin.bottom)
   	.append("g")
