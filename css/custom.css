@@ -31,3 +31,8 @@
   padding-top: 15%;
   position:relative;
 }
+
+.svg-class{
+  display: block;
+  margin: auto;
+}
