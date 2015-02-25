@@ -26,3 +26,8 @@
 .tick{
   stroke-width: 0px;
 }
+#myText{
+  text-align:center;
+  padding-top: 15%;
+  position:relative;
+}
