@@ -1,27 +1,81 @@
 /* TODO: add staircasing, add keyevents, bind to flask, save db*/
 
+var beginTrial = false;
+var z = false;
+var m = false;
+var space = false;
+
 document.onkeydown = checkKey;
 
 window.onload = function(e){
-
+  var tim = new Timer();
+  tim.start();
+  console.log(tim.currentTime);
+  // setTimeout(function(){if(beginTrial){myTrial.next();}},2000)
 }
+// setInterval(function(){
+//   if(!space && !beginTrial){
+//     displayText("Press Space to begin");
+//   }else{
+//     removeText();
+//     myTrial.begin();
+//     setTimeout(function(){console.log('stopping trial');beginTrial=false;myTrial.remove();}, 2000);
+//   }
+// },20);
 /////////////////////Key Events?////////////////////////////////////////////////
+
+function draw(){
+  requestAnimationFrame(draw);
+  //var t0 = performance.now();
+  // if(!space && !beginTrial){displayText("Press space to begin");}
+  // else{removeText();}
+  // if(beginTrial && currentTime > 3){
+  //   removeText();
+  //   myTrial.begin();
+  //   resetTimer();
+  //   // console.log("asdasd");
+  // }
+  //var t1 = performance.now();
+  //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+//  console.log(time);
+  // if(!space && !beginTrial){
+  //   displayText("Press Space to begin");
+  // }while (beginTrial){
+  //   removeText();
+  //   myTrial.begin();
+  //   beginTrial = false;
+  //   //remove after two seconds
+  //   setTimeout(function(){
+  //     myTrial.remove();
+  //     }, 2000);
+  // }
+}
+//startTimer();
+
+
+//draw();
+
 function checkKey(e) {
 
     e = e || window.event;
 
-    if (e.keyCode == '90') {
+    if (e.keyCode == '90' && beginTrial) {
         // z key
-        console.log('z');
+        myTrial.next('z');
+        z = true;
     }
-    else if (e.keyCode == '77') {
+    else if (e.keyCode == '77' && beginTrial) {
         // m key
-        console.log('m');
+        myTrial.next('m');
+        m = true;
     }
     else if (e.keyCode == '32') {
         //space
-        // barChart.next();
-        console.log('space');
+        space = true;
+        // removeText();
+        beginTrial = true;
+        console.log('begining trial');
+        space = false;
     }
 }
 /////////////////////D3 Variables///////////////////////////////////////////////
@@ -145,16 +199,16 @@ function drawChart(stage, type, data, numBars){
 var mydata;
 var space = false;
 var trialData;
-var t = 0.0;
+//var t = 0.0;
 // load the external data
 d3.json("data/4bar.json", function(error, data) {
   if(!error){
     trialData = data;
     numTrials = data.length;
     //drawing the charts from Trial class.. this probably shouldnt be here tho..
-    barChart = new Trial(trialData, bar);
-    barChart.randomizeData();
-    // setInterval(function(){barChart.next();},2000);
+    myTrial = new Trial(trialData, dot);
+    myTrial.randomizeData();
+    // setInterval(function(){myTrial.next();},2000);
   }else{
     console.log(error);
   }
@@ -167,7 +221,7 @@ var numBars = 4; //does nothing yet
 var trialNum = 0; // Trial iterator
 var numTrials; // defined by data.length
 var stage; //global stage
-var barChart; // Trial class object
+var myTrial; // Trial class object
 /////////////////////Trial Class////////////////////////////////////////////////
 var Trial = function (trialData, chartType) {
   this.trialData = trialData;
@@ -179,21 +233,22 @@ var Trial = function (trialData, chartType) {
 
 //draws first chart
 Trial.prototype.begin = function(){
-  var mystage = drawStage(stage);
-  drawChart(mystage, this.chartType, trialData, numBars);
-  console.log("trial number:" + trialNum);
-}
-
-//goes to next trial, removes svg, creates new svg, renders chart
-Trial.prototype.next = function() {
   //remove svg
   d3.selectAll("svg").remove();
-  trialNum++;
   //create stage (svg)
   var mystage = drawStage(stage);
   //draws chart
   drawChart(mystage, this.chartType, this.trialData, numBars);
   console.log("trial number:" + trialNum);
+  trialNum++;
+}
+
+//goes to next trial, removes svg, creates new svg, renders chart
+Trial.prototype.next = function() {
+  beginTrial = true;
+  console.log("saving answer: " + answer);
+
+  beginTrial = false;
 }
 //delete svg
 Trial.prototype.remove = function(){
@@ -204,23 +259,32 @@ Trial.prototype.reset = function(){
   d3.selectAll("svg").remove();
   trialNum = 0;
 }
-//displays text ('press space to begin' or '+')
-Trial.prototype.displayText = function (myText){
-  this.myText = myText;
-  document.getElementById("myText").innerHTML = this.myText;
-}
-//removes all text from 'myText' h1 element
-Trial.prototype.removeText = function (){
-  document.getElementById("myText").innerHTML = "";
-}
 //randomize data
 Trial.prototype.randomizeData = function(){
   var shuffledArray = jsPsych.randomization.repeat(this.trialData, 1);
   this.trialData = shuffledArray;
 }
 //saves data
-Trial.prototype.saveData = function(){
+Trial.prototype.saveData = function(answer){
   //save data
+  this.answer = answerl
+  console.log('my answer: ' + answer);
+}
+/////////////////////Timer Class (wont use)/////////////////////////////////////
+var Timer = function(){
+  this.t = 0;
+  this.currentTime;
+}
+Timer.prototype.start = function(){
+  this.currentTime = self.setInterval(function(){this.t++;this.currentTime = this.t;},1000);
+
+}
+Timer.prototype.stop = function(){
+  clearInterval(this.currentTime);
+  this.currentTime = null;
+  this.t = 0.0;
+  return this.currentTime;
+
 }
 /////////////////////Helper Functions///////////////////////////////////////////
 //Display Text Function///////////
@@ -237,7 +301,7 @@ function numberOfBars(numTrials){
 }
 //Timer Functions////////////////
 function startTimer(){
-  currentTime = self.setInterval(function(){console.log(t);t++;},1000);
+  currentTime = self.setInterval(function(){t++;currentTime = t;},1000);
 }
 function resetTimer(){
   clearInterval(currentTime);
