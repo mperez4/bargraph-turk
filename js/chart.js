@@ -3,56 +3,29 @@
 var beginTrial = false;
 var z = false;
 var m = false;
+var dataReady = false;
 var space = false;
-
+var didntAnswer = true;
 document.onkeydown = checkKey;
 
 window.onload = function(e){
-  var tim = new Timer();
-  tim.start();
-  console.log(tim.currentTime);
-  // setTimeout(function(){if(beginTrial){myTrial.next();}},2000)
+  while(time < trialTime){
+    //do one trial
+  }
+  if(time > trialTime && didntAnswer){
+    //remove trial
+    //disable key listener
+    //display 'too slow'
+    //display 'press space to begin'
+  }
+
 }
-// setInterval(function(){
-//   if(!space && !beginTrial){
-//     displayText("Press Space to begin");
-//   }else{
-//     removeText();
-//     myTrial.begin();
-//     setTimeout(function(){console.log('stopping trial');beginTrial=false;myTrial.remove();}, 2000);
-//   }
-// },20);
+
 /////////////////////Key Events?////////////////////////////////////////////////
 
-function draw(){
-  requestAnimationFrame(draw);
-  //var t0 = performance.now();
-  // if(!space && !beginTrial){displayText("Press space to begin");}
-  // else{removeText();}
-  // if(beginTrial && currentTime > 3){
-  //   removeText();
-  //   myTrial.begin();
-  //   resetTimer();
-  //   // console.log("asdasd");
-  // }
-  //var t1 = performance.now();
-  //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
-//  console.log(time);
-  // if(!space && !beginTrial){
-  //   displayText("Press Space to begin");
-  // }while (beginTrial){
-  //   removeText();
-  //   myTrial.begin();
-  //   beginTrial = false;
-  //   //remove after two seconds
-  //   setTimeout(function(){
-  //     myTrial.remove();
-  //     }, 2000);
-  // }
-}
-//startTimer();
-
-
+// function draw(){
+//   requestAnimationFrame(draw);
+// }
 //draw();
 
 function checkKey(e) {
