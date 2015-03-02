@@ -6,51 +6,62 @@ var m = false;
 var dataReady = false;
 var space = false;
 var didntAnswer = true;
-document.onkeydown = checkKey;
+var time;
+var trialTime;
 
 window.onload = function(e){
-  while(time < trialTime){
-    //do one trial
-  }
-  if(time > trialTime && didntAnswer){
-    //remove trial
-    //disable key listener
-    //display 'too slow'
-    //display 'press space to begin'
-  }
-
+  draw();
 }
-
+var delay = true;
 /////////////////////Key Events?////////////////////////////////////////////////
 
-// function draw(){
-//   requestAnimationFrame(draw);
+function draw(){
+   requestAnimationFrame(draw);
+
+   if(!beginTrial){
+     displayText('Press Space to Begin');
+   }else{
+     removeText();
+     if(delay){
+       displayText("+");
+       setTimeout(function(){removeText();delay = false;},1000)
+     }
+   }
+}
+//task
+// while(beginTrial && time < trialTime){
+//   //do one trial
 // }
-//draw();
-
-function checkKey(e) {
-
-    e = e || window.event;
-
-    if (e.keyCode == '90' && beginTrial) {
-        // z key
-        myTrial.next('z');
-        z = true;
-    }
-    else if (e.keyCode == '77' && beginTrial) {
-        // m key
-        myTrial.next('m');
-        m = true;
-    }
-    else if (e.keyCode == '32') {
-        //space
-        space = true;
-        // removeText();
-        beginTrial = true;
-        console.log('begining trial');
-        space = false;
+// if(time > trialTime && didntAnswer){
+//   //remove trial
+//   //disable key listener
+//   //display 'too slow'
+//   //display 'press space to begin'
+// }
+var key;
+function keyPressed(e){
+  if(e.which == '32'){
+    // space
+    key = e.which;
+    beginTrial = true;
+    console.log("space");
+  } else if(e.which == '90'){
+    //z
+    key = e.which;
+    console.log("z");
+  }
+    else if(e.which == '77'){
+    //m
+    key = e.which;
+    console.log("m");
     }
 }
+
+//to create listener:
+$(document).keyup(keyPressed);
+//to delete listener:
+//$(document).unbind("keyup", keyPressed);
+
 /////////////////////D3 Variables///////////////////////////////////////////////
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
 	width = 960 - margin.left - margin.right,
