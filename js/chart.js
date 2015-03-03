@@ -94,7 +94,6 @@ function drawStage(stage){
   	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   return stage;
 }
-
 //draw the chart (stimulus)
 function drawChart(stage, type, data, numBars){
   var chart = type;
